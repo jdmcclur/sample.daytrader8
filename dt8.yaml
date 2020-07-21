@@ -1,0 +1,59 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dt8-deployment
+  labels:
+    app: dt8
+spec:
+  selector:
+    matchLabels:
+      app: dt8
+  template:
+    metadata:
+      labels:
+        app: dt8
+    spec:
+      containers:
+      - name: dt8-container
+        image: image-registry.openshift-image-registry.svc:5000/daytrader/dt8
+        ports:
+        - containerPort: 9080
+        env:
+          - name: contextRoot
+            value: daytrader
+          - name: dbUser
+            value: db2inst1
+          - name: dbPass
+            value: r0chester
+          - name: tradeDbHost
+            value: 192.168.90.82
+          - name: tradeDbPort
+            value: '50001'
+          - name: tradeDbName
+            value: trade7db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dt8-service
+spec:
+  selector:
+    app: dt8
+  ports:
+  - protocol: TCP
+    port: 9080
+---
+apiVersion: v1
+kind: Route
+metadata:
+  name: dt8-route
+spec:
+  path: /daytrader
+  host: daytrader.acmeair.apps.wasocp44k.purple-chesterfield.com
+  to:
+    kind: Service
+    name: dt8-service
+
+
+

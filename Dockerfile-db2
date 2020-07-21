@@ -1,0 +1,13 @@
+FROM open-liberty:kernel
+
+COPY target/io.openliberty.sample.daytrader8.war /config/apps/
+COPY src/main/liberty/config/server.xml_db2 /config/server.xml
+COPY src/main/liberty/config/jvm.options /config/jvm.options
+
+#DB2
+COPY db2jars/db2jcc4.jar /opt/ol/wlp/usr/shared/resources/db2jars/db2jcc4.jar
+COPY db2jars/db2jcc_license_cu.jar /opt/ol/wlp/usr/shared/resources/db2jars/db2jcc_license_cu.jar
+
+
+RUN configure.sh
+
