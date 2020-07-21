@@ -1,3 +1,35 @@
+# OCP instructions
+
+This assumes you have db2 setup for daytrader outside of the cluster (but somewhere the cluster can reach).
+
+Clone repo
+```
+git clone https://github.com/jdmcclur/sample.daytrader8
+cd sample.daytrader8
+```
+
+Get DB2 Jars in place
+```
+mkdir db2jars
+copy db2jcc4.jar and db2jcc_license_cu.jar to db2jars/
+```
+
+Log into OCP and the image registry, and create daytrader project.
+Then build and push the image.
+```
+./login
+oc new-project daytrader
+./buildPush.sh
+```
+
+Setup the pods/routes
+```
+edit dt8.yaml (change to your db2 settings and route)
+oc apply -f dt8.yaml
+Go to your route and make sure you can login.
+```
+
+
 # Java EE8: DayTrader8 Sample
 
 This sample contains the DayTrader 8 benchmark, which is an application built around the paradigm of an online stock trading system. The application allows users to login, view their portfolio, lookup stock quotes, and buy or sell stock shares. With the aid of a Web-based load driver such as Apache JMeter, the real-world workload provided by DayTrader can be used to measure and compare the performance of Java Platform, Enterprise Edition (Java EE) application servers offered by a variety of vendors. In addition to the full workload, the application also contains a set of primitives used for functional and performance testing of various Java EE components and common design patterns.
